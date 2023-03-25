@@ -57,7 +57,6 @@ const fetchOneImage = async (req: Request, res: Response, _next: NextFunction): 
         return '/' + fileName + fileNum + '.jpg';
     };
     const filePath = path.resolve(__dirname, '../server/src/static/tarotImgs/');
-    console.log('🚀 ~ file: tarot.controller.ts:20 ~ fetchOneImage ~ filePath:', filePath);
     return res.sendFile(filePath + parseReqToFileName(suit, rank));
 };
 
