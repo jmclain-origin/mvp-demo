@@ -1,0 +1,30 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+    "compilerOptions": {
+      "target": "ES6",
+      "lib": [
+        "DOM",
+        "DOM.Iterable",
+        "ESNext"
+      ],
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "noFallthroughCasesInSwitch": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": false,
+      "jsx": "react-jsx",
+      "sourceMap": true,
+      "composite": true,
+      "types": ["node"],
+      "rootDir": "../",
+      "baseUrl": "./src",
+    },
+  }

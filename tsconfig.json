@@ -1,0 +1,21 @@
+{
+    "references": [
+        {
+            "path": "./server"
+        },
+        {
+            "path": "./client"
+        }
+    ],
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "composite": true,
+        "esModuleInterop": true,
+        "baseUrl": "./",
+        "declarationDir": "./typescript",
+        "paths": {
+            "@global/*": ["global/*"],
+            "@server/*": ["server/src/*"]
+        }
+    },
+}

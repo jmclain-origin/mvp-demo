@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["src/**/*.ts", "../global/**/*.ts", "server.ts"],
+  "exclude": ["./__tests__"],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "composite": true,
+    "types": ["node", "jest"],
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "../",
+    "paths": {
+      "@global/*": ["global/*"],
+      "@server/*": ["server/src/*"],
+    }
+  },
+}
