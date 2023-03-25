@@ -15,7 +15,8 @@
         "declarationDir": "./typescript",
         "paths": {
             "@global/*": ["global/*"],
-            "@server/*": ["server/src/*"]
+            "@server/*": ["server/src/*"],
+            "@client/*": ["client/src/*"]
         }
     },
 }

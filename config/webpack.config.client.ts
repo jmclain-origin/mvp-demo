@@ -12,7 +12,14 @@ import paths, { RepositoryPaths } from './paths';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const { ROOT_DIR, BUILD_OUTPUT_DIR, CLIENT_SRC, CLIENT_ASSETS, CLIENT_PUBLIC }: RepositoryPaths = paths;
+const {
+    ROOT_DIR,
+    BUILD_OUTPUT_DIR,
+    CLIENT_SRC,
+    CLIENT_ASSETS,
+    CLIENT_PUBLIC,
+    ALIAS: { GLOBAL_PATH },
+}: RepositoryPaths = paths;
 
 const getConfig = (_env: { [key: string]: string }, operation: { [key: string]: string }): Configuration => {
     const currentPath = ROOT_DIR;
@@ -37,6 +44,13 @@ const getConfig = (_env: { [key: string]: string }, operation: { [key: string]: 
             path: BUILD_OUTPUT_DIR + '/public',
             filename: '[name].bundle.js',
             publicPath: '/',
+        },
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            alias: {
+                '@global': GLOBAL_PATH,
+                '@client': CLIENT_SRC,
+            },
         },
         module: {
             rules: [
