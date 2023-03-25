@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import cors from 'cors';
 import environmentVars from '@global/environmentVars';
 
 import { connectDB } from './services/db.config';
@@ -9,8 +10,14 @@ const { NODE_ENV }: typeof environmentVars = environmentVars;
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, 'static')));
+
+console.log(path.join(__dirname, 'static'));
 
 if (NODE_ENV !== 'test') {
     connectDB();
