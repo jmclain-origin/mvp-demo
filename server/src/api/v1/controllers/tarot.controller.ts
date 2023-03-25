@@ -34,7 +34,7 @@ const fetchOneImage = async (req: Request, res: Response, _next: NextFunction): 
                 break;
         }
         if (!isNaN(parseInt(rank))) {
-            parseInt(rank) < 10 ? (fileNum = `0${rank}`) : (fileNum = rank);
+            fileNum = parseInt(rank) < 10 ? `0${rank}` : rank;
         } else {
             const copy = rank as 'page' | 'knight' | 'queen' | 'king';
             switch (copy) {

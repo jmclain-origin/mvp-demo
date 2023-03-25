@@ -1,5 +1,4 @@
 import { FC } from 'react';
-// import RadioQuiz from '@client/components/RadioQuiz';
 import TarotMainPage from '@client/components/TarotPageComponents';
 
 const App: FC = () => (
