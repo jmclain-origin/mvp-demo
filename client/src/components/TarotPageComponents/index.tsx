@@ -5,7 +5,7 @@ import { Search } from 'heroicons-react';
 import TarotCard from './TarotCard';
 import Modal from './Modal';
 
-const BASE_URL = 'http://localhost:5000/api/v1';
+const BASE_URL = 'http://localhost:5000/api/v2';
 export type MeaningsT = {
     light: string[];
     shadow: string[];
@@ -17,6 +17,7 @@ export type CardT = {
     meanings: MeaningsT;
     suit: 'major' | 'wands' | 'cups' | 'swords' | 'coins';
     rank: string | number;
+    rank_int: number;
 };
 
 const TarotMainPage: FC = () => {
@@ -50,12 +51,14 @@ const TarotMainPage: FC = () => {
 
     const fetchCards = async (): Promise<CardT[]> => {
         try {
-            const response = await axios.get(`${BASE_URL}/tarot`);
+            const response = await axios.get(`${BASE_URL}/tarot/new`);
             const results = new Promise<CardT[]>(
                 (resolve: (value: CardT[] | PromiseLike<CardT[]>) => void, reject: (reason: any) => void) => {
                     const cards: CardT[] = response.data.map((card: CardT) => ({
                         ...card,
-                        imgUrl: `${BASE_URL}/tarot/img/${card?.suit}/${card?.rank}`,
+                        imgUrl: `${BASE_URL}/tarot/img/${card?.suit}/${card?.rank_int}?name=${card?.name
+                            .split(' ')
+                            .join('')}&`,
                     }));
                     if (response.data.length === 0) {
                         reject(new Error('No cards found'));
