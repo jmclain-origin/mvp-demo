@@ -1,8 +1,9 @@
-import React, { FC, useEffect, useState, SyntheticEvent } from 'react';
+import React, { FC, useEffect, useState, SyntheticEvent, useCallback } from 'react';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { Search } from 'heroicons-react';
 import TarotCard from './TarotCard';
+import Modal from './Modal';
 
 const BASE_URL = 'http://localhost:5000/api/v1';
 export type MeaningsT = {
@@ -22,6 +23,8 @@ const TarotMainPage: FC = () => {
     const [deck, setDeck] = useState<CardT[]>([]);
     const [activeFilter, setActiveFilter] = useState<string>('major');
     const [search, setSearch] = useState('');
+    const [expandedCard, setExpandedCard] = useState<CardT | null>(null);
+    console.log('🚀 ~ file: index.tsx:27 ~ expandedCard:', expandedCard);
 
     useEffect(() => {
         deckFetchNFilter(activeFilter);
@@ -38,6 +41,7 @@ const TarotMainPage: FC = () => {
             filter === 'pentacles' ? card.suit === 'coins' : filter === 'all' || card.suit === filter,
         );
         setDeck(filteredDeck);
+        setExpandedCard(filteredDeck[0]);
     };
 
     /**
@@ -91,6 +95,21 @@ const TarotMainPage: FC = () => {
         setSearch(value);
     };
 
+    const handleClickCard = (_event: SyntheticEvent<HTMLDivElement>, card: CardT) => {
+        setExpandedCard(() => card);
+    };
+
+    const handleCardView = (viewing: boolean) => {
+        if (!viewing) setExpandedCard(null);
+    };
+
+    const onClickCard = useCallback(
+        (event: SyntheticEvent<HTMLDivElement>, card: CardT) => handleClickCard(event, card),
+        [],
+    );
+
+    const closeCardView = useCallback((viewing: boolean) => handleCardView(viewing), []);
+
     return (
         <div className="min-h-screen w-full bg-neutral-900 p-6 pt-16 lg:pt-24">
             <nav className="fixed top-0 inset-x-0 h-16 md:h-20 bg-neutral-800 z-20 border-b border-neutral-400 text-white flex justify-between">
@@ -124,10 +143,22 @@ const TarotMainPage: FC = () => {
                 </div>
             </nav>
             <div className="flex flex-wrap justify-center items-center">
-                {deck.map((card: CardT) => (
-                    <TarotCard card={card} key={uuid()} />
+                {deck.map((card: CardT, index: number) => (
+                    <TarotCard card={card} key={uuid()} onClick={onClickCard} index={index} />
                 ))}
             </div>
+            {expandedCard !== null && (
+                <Modal isShown={expandedCard !== null} setIsShown={closeCardView}>
+                    <>
+                        <h3 className="text-xl text-center mb-1">{expandedCard.name}</h3>
+                        <img className="w-1/3 inline-block" src={expandedCard.imgUrl} alt={expandedCard.name} />
+                        <div className="w-2/3 inline-block">
+                            <h4></h4>
+                        </div>
+                        <h3>{expandedCard.rank}</h3>
+                    </>
+                </Modal>
+            )}
         </div>
     );
 };
