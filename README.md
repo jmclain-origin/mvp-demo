@@ -1,58 +1,34 @@
-# MERN boilerplate
+# MVP - Demo
 
- I had inspiration for this boilerplate because I come across a lot of others that use a ploy-repo when nesting `create-react-app` into a `express` server and don't quite meet the requirements I've sought. I wanted to keep all dependencies at root level with one `package.json` file. I'm learning and trying some different concepts to file structures, dependency management, and integration testing. Along with CI/CD into a single cloud service delivering production builds of both Express and React applications on a single instance container.
 
-## Tech stack
+Most Valuable Player Demonization
 
-- React 18
-- Express 4
-- TypeScript 4
-- Webpack 5
+A passion project and internet of things.
 
-## Development use
+## Overview
 
-### System requirements
+The main goal of this project is creation and art. The idea behind it is to learn and try different methods then what I have learned in the industry thus far and seek solutions for common web application requirements and bring them together to production following some best practices in the development to production process.
 
-- Docker Compose
-- Node.js
-- Yarn
+> Inspired by my own personal tastes and [The Art of Code](https://www.youtube.com/watch?v=6avJHaC3C2U).
 
-Start up MongoDB docker container by running command
+## Acknowledgements
 
-```bash
-docker-compose up -d
-```
+Special thanks to the open source creators and contributors that put their projects out there.
 
-### Node Scripts
+_coming soon_
 
-Start the full stack development application by running command
+## Usage info
 
-```bash
-yarn start
-```
+Open to collaboration, suggestions, comments and feedback.
 
-Start the backend API server only by running command
+Want to clone it and run it yourself. See the [README](./CONTRIBUTOR.md) here.
 
-```bash
-yarn start:server
-```
+## Scope/Features
 
-Start the frontend client only by running command
+Currently working on a Tarot card reading and card info section. Only the catalog view is available this time
 
-```bash
-yarn start:client
-```
 
-## Features
-
-- Development build watching changes with automatic live reloading
-- Pre-commit hook enforcing linting rules
-- TailwindCSS added for React
-- React env file usage based on environment. ie Production, Development
-- Production build both apps into single output directory.
-
-## Final goals
-
-- production build into SSR/SSG
-- local & social-media strategies for authentication and session management
-- global state management with Redux
+>   MVP-Demo  Copyright (C) 2023  Josh McLian  
+    This program comes with ABSOLUTELY NO WARRANTY  
+    This is free software, and you are welcome to redistribute it  
+    under certain conditions; see [license](./LICENSE.md) for details.
