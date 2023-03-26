@@ -21,24 +21,28 @@ export type CardT = {
 const TarotMainPage: FC = () => {
     const [deck, setDeck] = useState<CardT[]>([]);
     const [activeFilter, setActiveFilter] = useState<string>('major');
-    useEffect(() => {
-        console.log('🚀 ~ file: index.tsx:20 ~ deck:', deck);
-    }, [deck]);
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         deckFetchNFilter(activeFilter);
     }, []);
 
+    useEffect(() => {
+        lazyLookUp(search);
+    }, [search]);
+
     const deckFetchNFilter = async (filter: string) => {
         const deckFetch = await fetchCards();
-        console.log('🚀 ~ file: index.tsx:32 ~ deckFetchNFilter ~ deckFetch:', deckFetch);
         setActiveFilter(filter);
         const filteredDeck = deckFetch.filter((card) =>
             filter === 'pentacles' ? card.suit === 'coins' : filter === 'all' || card.suit === filter,
         );
-        console.log('🚀 ~ file: index.tsx:37 ~ deckFetchNFilter ~ filteredDeck:', filteredDeck);
         setDeck(filteredDeck);
     };
+
+    /**
+     * TODO: move data mapping to a backend service and update static data set with additional data before shipping
+     */
 
     const fetchCards = async (): Promise<CardT[]> => {
         try {
@@ -63,12 +67,28 @@ const TarotMainPage: FC = () => {
         }
     };
 
+    const lazyLookUp = async (query: string): Promise<void> => {
+        const deckFetch = await fetchCards();
+        const searchResults = deckFetch.filter((card) => {
+            const queryRegex = new RegExp(query, 'gi');
+            if (card.name.match(queryRegex)) return true;
+            for (const fortune of card.fortune_telling) {
+                if (fortune.match(queryRegex)) return true;
+            }
+            return false;
+        });
+        setDeck(searchResults);
+    };
+
     const handleSelect = (event: SyntheticEvent<HTMLSelectElement>) => {
-        console.log('🚀 ~ file: index.tsx:40 ~ handleSelect ~ event:', event);
         const { value } = event.target as HTMLSelectElement;
-        console.log('🚀 ~ file: index.tsx:40 ~ handleSelect ~ value:', value);
         setActiveFilter(value);
         deckFetchNFilter(value);
+    };
+
+    const handleSearch = (event: SyntheticEvent<HTMLInputElement>) => {
+        const { value } = event.target as HTMLInputElement;
+        setSearch(value);
     };
 
     return (
@@ -88,15 +108,17 @@ const TarotMainPage: FC = () => {
                     </select>
                 </div>
                 <div className="h-full w-full hidden md:flex justify-center items-center md:w-2/4 text-center">
-                    <h1 className="text-4xl">Rider Waite Tarot</h1>
+                    <h1 className="text-4xl">The Rider Waite Tarot Deck</h1>
                 </div>
                 <div className="h-full w-3/5 md:w-1/4 flex items-center justify-center mr-2 md:mr-4">
                     <div className="relative w-full">
                         <Search className="h-5 w-5 absolute left-0 inset-y-0 mt-2 ml-1" />
                         <input
                             type="text"
-                            placeholder="search"
+                            placeholder="search cards..."
                             className="w-full h-8 rounded bg-neutral-500 placeholder:text-gray-100 text-white pl-7 outline-none focus:outline-1 focus:outline-green-700"
+                            value={search}
+                            onChange={handleSearch}
                         />
                     </div>
                 </div>
