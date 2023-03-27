@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { XCircle } from 'heroicons-react';
 
@@ -16,6 +16,10 @@ const Modal = ({ children, isShown, setIsShown }: Props): ReactElement | null =>
         if (isShown) document.addEventListener('keydown', handleEscape, false);
         return () => document.removeEventListener('keydown', handleEscape, false);
     }, [handleEscape, isShown]);
+
+    const closeModal = () => setIsShown(false);
+    const handleClosing = useCallback(() => closeModal(), [closeModal]);
+
     return isShown
         ? createPortal(
               <div className="absolute inset-0 z-30">
@@ -23,7 +27,7 @@ const Modal = ({ children, isShown, setIsShown }: Props): ReactElement | null =>
                       <div className="relative w-full mx-2  p-2 bg-neutral-900 text-white rounded">
                           <XCircle
                               className="h-12 w-12 absolute -right-2 -top-2 cursor-pointer text-neutral-200"
-                              onClick={() => setIsShown(false)}
+                              onClick={handleClosing}
                           />
                           {children}
                       </div>

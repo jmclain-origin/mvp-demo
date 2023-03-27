@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState, SyntheticEvent, useCallback } from 'react';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
-import { Search, ArrowRightOutline } from 'heroicons-react';
+import { Search } from 'heroicons-react';
 import TarotCard from './TarotCard';
-import Modal from './Modal';
+import CardDetailsModal from './CardDetailsModal';
 
 const BASE_URL = 'http://localhost:5000/api/v2';
 export type MeaningsT = {
@@ -155,28 +155,7 @@ const TarotMainPage: FC = () => {
                     <TarotCard card={card} key={uuid()} onClick={onClickCard} index={index} />
                 ))}
             </div>
-            {expandedCard !== null && (
-                <Modal isShown={expandedCard !== null} setIsShown={closeCardView}>
-                    <>
-                        <span className="text-base absolute top-0">{expandedCard.roman_numerals}</span>
-                        <h4 className="text-xl w-full text-center">{expandedCard.name}</h4>
-                        <img
-                            className="w-1/3 inline-block float-left mr-1 mb-1"
-                            src={expandedCard.imgUrl}
-                            alt={expandedCard.name}
-                        />
-
-                        <p className="text-xs">{expandedCard.desc}</p>
-
-                        <hr className="my-1" />
-                        <p className="mb-1 text-center">{expandedCard.keywords.join('. ').toUpperCase()}</p>
-                        <button type="button" className="w-full text-right p-1">
-                            See meanings
-                            <ArrowRightOutline className="inline h-5 w-5 pl-1" />
-                        </button>
-                    </>
-                </Modal>
-            )}
+            <CardDetailsModal tarotCard={expandedCard} setIsOpen={closeCardView} isOpen={expandedCard !== null} />
         </div>
     );
 };
