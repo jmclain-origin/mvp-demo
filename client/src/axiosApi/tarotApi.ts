@@ -5,7 +5,7 @@ export const BASE_URL = 'http://localhost:5000/api/v2';
 
 export const fetchTarotCards = async (): Promise<CardT[]> => {
     try {
-        const response = await axios.get(`${BASE_URL}/tarot/new`);
+        const response = await axios.get(`${BASE_URL}/tarot`);
         const results = new Promise<CardT[]>(
             (resolve: (value: CardT[] | PromiseLike<CardT[]>) => void, reject: (reason: any) => void) => {
                 const cards: CardT[] = response.data.map((card: CardT) => ({
