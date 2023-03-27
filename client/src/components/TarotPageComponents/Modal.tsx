@@ -20,12 +20,12 @@ const Modal = ({ children, isShown, setIsShown }: Props): ReactElement | null =>
         ? createPortal(
               <div className="absolute inset-0 z-30">
                   <div className="fixed inset-0 bg-gray-600/60 flex justify-center items-center">
-                      <div className="relative w-full mx-2 h-[80%] p-2 bg-neutral-900 text-white rounded">
+                      <div className="relative w-full mx-2  p-2 bg-neutral-900 text-white rounded">
                           <XCircle
-                              className="h-12 w-12 absolute -right-3 -top-3 cursor-pointer text-neutral-200"
+                              className="h-12 w-12 absolute -right-2 -top-2 cursor-pointer text-neutral-200"
                               onClick={() => setIsShown(false)}
                           />
-                          <section>{children}</section>
+                          {children}
                       </div>
                   </div>
               </div>,

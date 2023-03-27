@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, SyntheticEvent, useCallback } from 'react';
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
-import { Search } from 'heroicons-react';
+import { Search, ArrowRightOutline } from 'heroicons-react';
 import TarotCard from './TarotCard';
 import Modal from './Modal';
 
@@ -13,11 +13,18 @@ export type MeaningsT = {
 export type CardT = {
     name: string;
     fortune_telling: string[];
+    keywords: string[];
     imgUrl: string;
     meanings: MeaningsT;
     suit: 'major' | 'wands' | 'cups' | 'swords' | 'coins';
     rank: string | number;
     rank_int: number;
+    desc: string;
+    type: string;
+    meaning_up: string;
+    meaning_rev: string;
+    roman_numerals: string;
+    image: string;
 };
 
 const TarotMainPage: FC = () => {
@@ -38,9 +45,7 @@ const TarotMainPage: FC = () => {
     const deckFetchNFilter = async (filter: string) => {
         const deckFetch = await fetchCards();
         setActiveFilter(filter);
-        const filteredDeck = deckFetch.filter((card) =>
-            filter === 'pentacles' ? card.suit === 'coins' : filter === 'all' || card.suit === filter,
-        );
+        const filteredDeck = deckFetch.filter((card) => filter === 'all' || card.suit === filter);
         setDeck(filteredDeck);
         setExpandedCard(filteredDeck[0]);
     };
@@ -153,12 +158,22 @@ const TarotMainPage: FC = () => {
             {expandedCard !== null && (
                 <Modal isShown={expandedCard !== null} setIsShown={closeCardView}>
                     <>
-                        <h3 className="text-xl text-center mb-1">{expandedCard.name}</h3>
-                        <img className="w-1/3 inline-block" src={expandedCard.imgUrl} alt={expandedCard.name} />
-                        <div className="w-2/3 inline-block">
-                            <h4></h4>
-                        </div>
-                        <h3>{expandedCard.rank}</h3>
+                        <span className="text-base absolute top-0">{expandedCard.roman_numerals}</span>
+                        <h4 className="text-xl w-full text-center">{expandedCard.name}</h4>
+                        <img
+                            className="w-1/3 inline-block float-left mr-1 mb-1"
+                            src={expandedCard.imgUrl}
+                            alt={expandedCard.name}
+                        />
+
+                        <p className="text-xs">{expandedCard.desc}</p>
+
+                        <hr className="my-1" />
+                        <p className="mb-1 text-center">{expandedCard.keywords.join('. ').toUpperCase()}</p>
+                        <button type="button" className="w-full text-right p-1">
+                            See meanings
+                            <ArrowRightOutline className="inline h-5 w-5 pl-1" />
+                        </button>
                     </>
                 </Modal>
             )}
