@@ -21,7 +21,7 @@ _coming soon_
 
 Open to collaboration, suggestions, comments and feedback.
 
-Want to clone it and run it yourself. See the [README](./CONTRIBUTOR.md) here.
+Want to clone it and run it yourself. See the [README](./CONTRIBUTORS.md) here.
 
 ## Scope/Features
 

@@ -5,6 +5,7 @@ import environmentVars from '@global/environmentVars';
 
 import { connectDB } from './services/db.config';
 import v1Routes from './api/v1/routes';
+import v2Routes from './api/v2/routes';
 
 const { NODE_ENV }: typeof environmentVars = environmentVars;
 
@@ -30,6 +31,7 @@ if (NODE_ENV !== 'test') {
 }
 
 app.use('/api/v1', v1Routes);
+app.use('/api/v2', v2Routes);
 
 if (NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')));
