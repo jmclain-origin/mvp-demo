@@ -1,11 +1,10 @@
 import React, { FC, useEffect, useState, SyntheticEvent, useCallback } from 'react';
-import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { Search } from 'heroicons-react';
 import TarotCard from './TarotCard';
 import CardDetailsModal from './CardDetailsModal';
+import { fetchTarotCards as fetchCards } from '@client/axiosApi/tarotApi';
 
-const BASE_URL = 'http://localhost:5000/api/v2';
 export type MeaningsT = {
     light: string[];
     shadow: string[];
@@ -32,60 +31,19 @@ const TarotMainPage: FC = () => {
     const [activeFilter, setActiveFilter] = useState<string>('major');
     const [search, setSearch] = useState('');
     const [expandedCard, setExpandedCard] = useState<CardT | null>(null);
-    useEffect(() => {
-        deckFetchNFilter(activeFilter);
-    }, []);
-
-    useEffect(() => {
-        lazyLookUp(search);
-    }, [search]);
 
     const deckFetchNFilter = async (filter: string) => {
         const deckFetch = await fetchCards();
         setActiveFilter(filter);
         const filteredDeck = deckFetch.filter((card) => filter === 'all' || card.suit === filter);
         setDeck(filteredDeck);
-        setExpandedCard(filteredDeck[0]);
     };
-
-    /**
-     * TODO: move data mapping to a backend service and update static data set with additional data before shipping
-     */
-
-    const fetchCards = async (): Promise<CardT[]> => {
-        try {
-            const response = await axios.get(`${BASE_URL}/tarot/new`);
-            const results = new Promise<CardT[]>(
-                (resolve: (value: CardT[] | PromiseLike<CardT[]>) => void, reject: (reason: any) => void) => {
-                    const cards: CardT[] = response.data.map((card: CardT) => ({
-                        ...card,
-                        imgUrl: `${BASE_URL}/tarot/img/${card?.suit}/${card?.rank_int}?name=${card?.name
-                            .split(' ')
-                            .join('')}&`,
-                    }));
-                    if (response.data.length === 0) {
-                        reject(new Error('No cards found'));
-                    } else {
-                        resolve(cards);
-                    }
-                },
-            );
-            return results;
-        } catch (error: any) {
-            console.log('🚀 ~ file: index.tsx:28 ~ error:', error);
-            return error;
-        }
-    };
-
     const lazyLookUp = async (query: string): Promise<void> => {
         const deckFetch = await fetchCards();
         const searchResults = deckFetch.filter((card) => {
-            const queryRegex = new RegExp(query, 'gi');
-            if (card.name.match(queryRegex)) return true;
-            for (const fortune of card.fortune_telling) {
-                if (fortune.match(queryRegex)) return true;
-            }
-            return false;
+            const queryRegex = new RegExp(query, 'i');
+
+            return queryRegex.test(card.name) || queryRegex.test(card.keywords.join(' '));
         });
         setDeck(searchResults);
     };
@@ -116,6 +74,14 @@ const TarotMainPage: FC = () => {
 
     const closeCardView = useCallback((viewing: boolean) => handleCardView(viewing), []);
 
+    useEffect(() => {
+        deckFetchNFilter(activeFilter);
+    }, []);
+
+    useEffect(() => {
+        lazyLookUp(search);
+    }, [search]);
+
     return (
         <div className="min-h-screen w-full bg-neutral-900 p-6 pt-16 lg:pt-24">
             <nav className="fixed top-0 inset-x-0 h-16 md:h-20 bg-neutral-800 z-20 border-b border-neutral-400 text-white flex justify-between">
@@ -140,7 +106,7 @@ const TarotMainPage: FC = () => {
                         <Search className="h-5 w-5 absolute left-0 inset-y-0 mt-2 ml-1" />
                         <input
                             type="text"
-                            placeholder="search cards..."
+                            placeholder="search by keywords or name"
                             className="w-full h-8 rounded bg-neutral-500 placeholder:text-gray-100 text-white pl-7 outline-none focus:outline-1 focus:outline-green-700"
                             value={search}
                             onChange={handleSearch}
