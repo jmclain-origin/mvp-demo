@@ -16,7 +16,7 @@ export type CardT = {
     keywords: string[];
     imgUrl: string;
     meanings: MeaningsT;
-    suit: 'major' | 'wands' | 'cups' | 'swords' | 'coins';
+    suit: 'major' | 'wands' | 'cups' | 'swords' | 'pentacles';
     rank: string | number;
     rank_int: number;
     desc: string;
@@ -32,8 +32,6 @@ const TarotMainPage: FC = () => {
     const [activeFilter, setActiveFilter] = useState<string>('major');
     const [search, setSearch] = useState('');
     const [expandedCard, setExpandedCard] = useState<CardT | null>(null);
-    console.log('🚀 ~ file: index.tsx:27 ~ expandedCard:', expandedCard);
-
     useEffect(() => {
         deckFetchNFilter(activeFilter);
     }, []);
@@ -151,8 +149,8 @@ const TarotMainPage: FC = () => {
                 </div>
             </nav>
             <div className="flex flex-wrap justify-center items-center">
-                {deck.map((card: CardT, index: number) => (
-                    <TarotCard card={card} key={uuid()} onClick={onClickCard} index={index} />
+                {deck.map((card: CardT) => (
+                    <TarotCard card={card} key={uuid()} onClick={onClickCard} />
                 ))}
             </div>
             <CardDetailsModal tarotCard={expandedCard} setIsOpen={closeCardView} isOpen={expandedCard !== null} />
