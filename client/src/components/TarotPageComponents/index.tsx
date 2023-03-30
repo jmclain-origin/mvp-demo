@@ -34,24 +34,22 @@ const TarotMainPage: FC = () => {
 
     const deckFetchNFilter = async (filter: string) => {
         const deckFetch = await fetchCards();
-        setActiveFilter(filter);
-        const filteredDeck = deckFetch.filter((card) => filter === 'all' || card.suit === filter);
+        setActiveFilter(() => filter);
+        const filteredDeck = deckFetch.filter((card) => card.suit === filter || filter === 'all');
         setDeck(filteredDeck);
     };
     const lazyLookUp = async (query: string): Promise<void> => {
         const deckFetch = await fetchCards();
-        const searchResults = deckFetch.filter((card) => {
-            const queryRegex = new RegExp(query, 'i');
-
-            return queryRegex.test(card.name) || queryRegex.test(card.keywords.join(' '));
-        });
+        const queryRegex = new RegExp(query, 'i');
+        const searchResults = deckFetch.filter(
+            (card) => queryRegex.test(card.name) || queryRegex.test(card.keywords.join(' ')),
+        );
         setDeck(searchResults);
     };
 
     const handleSelect = (event: SyntheticEvent<HTMLSelectElement>) => {
         const { value } = event.target as HTMLSelectElement;
         setActiveFilter(value);
-        deckFetchNFilter(value);
     };
 
     const handleSearch = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -59,27 +57,20 @@ const TarotMainPage: FC = () => {
         setSearch(value);
     };
 
-    const handleClickCard = (_event: SyntheticEvent<HTMLDivElement>, card: CardT) => {
+    const handleClickCard = useCallback((_event: SyntheticEvent<HTMLDivElement>, card: CardT) => {
         setExpandedCard(() => card);
-    };
+    }, []);
 
-    const handleCardView = (viewing: boolean) => {
+    const handleCardView = useCallback((viewing: boolean) => {
         if (!viewing) setExpandedCard(null);
-    };
-
-    const onClickCard = useCallback(
-        (event: SyntheticEvent<HTMLDivElement>, card: CardT) => handleClickCard(event, card),
-        [],
-    );
-
-    const closeCardView = useCallback((viewing: boolean) => handleCardView(viewing), []);
-
-    useEffect(() => {
-        deckFetchNFilter(activeFilter);
     }, []);
 
     useEffect(() => {
-        lazyLookUp(search);
+        deckFetchNFilter(activeFilter);
+    }, [activeFilter]);
+
+    useEffect(() => {
+        if (search) lazyLookUp(search);
     }, [search]);
 
     return (
@@ -91,7 +82,7 @@ const TarotMainPage: FC = () => {
                         value={activeFilter}
                         onChange={handleSelect}
                     >
-                        {['all', 'major', 'wands', 'cups', 'swords', 'pentacles'].map((val) => (
+                        {['major', 'wands', 'cups', 'swords', 'pentacles', 'all'].map((val) => (
                             <option key={uuid()} value={val}>
                                 {val.toUpperCase()}
                             </option>
@@ -116,10 +107,10 @@ const TarotMainPage: FC = () => {
             </nav>
             <div className="flex flex-wrap justify-center items-center">
                 {deck.map((card: CardT) => (
-                    <TarotCard card={card} key={uuid()} onClick={onClickCard} />
+                    <TarotCard card={card} key={uuid()} onClick={handleClickCard} />
                 ))}
             </div>
-            <CardDetailsModal tarotCard={expandedCard} setIsOpen={closeCardView} isOpen={expandedCard !== null} />
+            <CardDetailsModal tarotCard={expandedCard} setIsOpen={handleCardView} isOpen={expandedCard !== null} />
         </div>
     );
 };

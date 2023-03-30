@@ -10,7 +10,7 @@ const TarotCard: FC<CardPropsT> = ({ card, onClick }: CardPropsT) => {
     return (
         <div
             className="w-full m-3 max-w-[360px] md:w-[48%] lg:w-1/4 xl:w-1/6 2xl:w-1/12 min-w-[240px] md:m-1 text-white text-center cursor-pointer"
-            onClick={(ev) => onClick(ev, card)}
+            onClick={(event) => onClick(event, card)}
         >
             <div className="w-full mb-1 px-4 bg-neutral-600 rounded-md flex justify-between items-center">
                 <span className='"text-left'>{roman_numerals}</span>
