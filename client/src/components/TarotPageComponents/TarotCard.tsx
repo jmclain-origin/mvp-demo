@@ -19,7 +19,7 @@ const TarotCard: FC<CardPropsT> = ({ card, onClick }: CardPropsT) => {
             </div>
             <div className="relative">
                 <img src={imgUrl} alt={name} className="m-auto w-full rounded-sm grayscale-[35%]" />
-                <div className="opacity-0 text-xs absolute top-0 bottom-0 left-0 right-0 hover:opacity-90 z-10 hover:bg-neutral-800 leading-relaxed px-1 py-1 overflow-scroll transition-all duration-300">
+                <div className="opacity-0 text-xs absolute top-0 bottom-0 left-0 right-0 hover:opacity-90 z-10 hover:bg-neutral-800 leading-relaxed px-1 py-1 overflow-scroll transition-all duration-300 overflow-x-hidden">
                     <div className="border-b border-neutral-50 w-full p-3">
                         <h3 className="block font-semibold underline">Fortune telling</h3>
                         <p className="mt-2">{fortune_telling.join(', ')}</p>
