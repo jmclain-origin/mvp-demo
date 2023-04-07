@@ -8,12 +8,27 @@ export const fetchTarotCards = async (): Promise<CardT[]> => {
         const response = await axios.get(`${BASE_URL}/tarot`);
         const results = new Promise<CardT[]>(
             (resolve: (value: CardT[] | PromiseLike<CardT[]>) => void, reject: (reason: any) => void) => {
-                const cards: CardT[] = response.data.map((card: CardT) => ({
-                    ...card,
-                    imgUrl: `${BASE_URL}/tarot/img/${card?.suit}/${card?.rank_int}?name=${card?.name
-                        .split(' ')
-                        .join('')}&`,
-                }));
+                const cards: CardT[] = response.data;
+                if (response.data.length === 0) {
+                    reject(new Error('No cards found'));
+                } else {
+                    resolve(cards);
+                }
+            },
+        );
+        return results;
+    } catch (error: any) {
+        console.log('🚀 ~ file: index.tsx:28 ~ error:', error);
+        return error;
+    }
+};
+
+export const fetchCardDrawing = async (drawCount: number): Promise<CardT[]> => {
+    try {
+        const response = await axios.get(`${BASE_URL}/tarot/draw?count=${drawCount}`);
+        const results = new Promise<CardT[]>(
+            (resolve: (value: CardT[] | PromiseLike<CardT[]>) => void, reject: (reason: any) => void) => {
+                const cards: CardT[] = response.data;
                 if (response.data.length === 0) {
                     reject(new Error('No cards found'));
                 } else {

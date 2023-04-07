@@ -6,7 +6,7 @@ type NewTypeV1 = {
         shadow: string[];
     };
     name: string;
-    rank: string;
+    rank: string | number;
     suit: string;
 };
 

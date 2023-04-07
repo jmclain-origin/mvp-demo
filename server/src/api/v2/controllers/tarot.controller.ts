@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import finalTarot from '@server/data/finalTarot';
+import { shuffleDeck } from '../../../utils/shuffleDeck';
+import { addImgUrlPath } from '../../../utils/addImgUrlPath';
 
 export const sendNewImage = async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     const suit = req.params.suit as 'major' | 'wands' | 'cups' | 'swords' | 'coins';
@@ -16,8 +18,23 @@ export const sendNewImage = async (req: Request, res: Response, _next: NextFunct
 };
 
 const getAllNew = (_req: Request, res: Response, _next: NextFunction): void => {
-    const data = finalTarot;
+    const data = addImgUrlPath(finalTarot);
     res.json(data);
 };
 
-export default { getAllNew, sendNewImage };
+const getByCount = (req: Request, res: Response, _next: NextFunction): Response<void> => {
+    const count = req.query.count as string;
+    if (count && !isNaN(parseInt(count))) {
+        const drawings = shuffleDeck(finalTarot, +count);
+        if (drawings.length === +count) {
+            const data = addImgUrlPath(drawings);
+            return res.status(200).json(data);
+        } else {
+            return res.status(400).json({ error: 'Invalid count' });
+        }
+    } else {
+        return res.status(500).json({ error: 'Missing count query' });
+    }
+};
+
+export default { getAllNew, sendNewImage, getByCount };

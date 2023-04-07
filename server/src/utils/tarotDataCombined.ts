@@ -1,6 +1,6 @@
-import { V1, V2 } from './V1';
+import { V1, V2 } from '../types/V1';
 import { int2roman } from './int2roman';
-import { Tarot } from './NewTypeV1';
+import { Tarot } from '../types/NewTypeV1';
 
 const findNewMatchFromOld = (v1: V1, set2: V2[]) =>
     set2.find((v2: V2) => {

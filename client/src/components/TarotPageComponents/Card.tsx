@@ -1,5 +1,6 @@
 import React from 'react';
 import cardBack from '../../assets/CardBacks.jpg';
+import { BASE_URL } from '@client/axiosApi/tarotApi';
 
 type CardProps = {
     labelTag: string;
@@ -20,7 +21,7 @@ export const Card = ({ labelTag, faceSrc, isLayered, children, rotate90, inverte
         </span>
         <img
             id={`card-${labelTag}`}
-            src={faceSrc ? faceSrc : cardBack}
+            src={faceSrc ? BASE_URL + faceSrc : cardBack}
             className={`h-16 sm:h-24 md:h-32 grayscale hover:border cursor-pointer${inverted ? ' rotate-180' : ''}`}
         />
         {isLayered && children}

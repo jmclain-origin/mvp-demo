@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { ArrowRightOutline, ArrowLeftOutline } from 'heroicons-react';
 import Modal from './Modal';
 import { CardT } from '.';
+import { BASE_URL } from '@client/axiosApi/tarotApi';
 
 type Props = {
     isOpen: boolean;
@@ -28,7 +29,7 @@ const CardDetailsModal = ({ isOpen, setIsOpen, tarotCard }: Props): JSX.Element 
                 <h4 className="text-xl lg:text-2xl font-bold w-full text-center">{tarotCard.name}</h4>
                 <img
                     className="w-1/3 max-w-[178px] md:max-w-[200px] lg:max-w-none inline-block float-left mr-1 mb-1"
-                    src={tarotCard.imgUrl}
+                    src={BASE_URL + tarotCard.imgUrl}
                     alt={tarotCard.name}
                 />
 

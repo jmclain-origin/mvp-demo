@@ -1,4 +1,6 @@
-export default [
+import { Tarot } from '@server/types/NewTypeV1';
+
+const deck: Tarot[] = [
     {
         fortune_telling: [
             'Watch for new projects and new beginnings',
@@ -2726,3 +2728,5 @@ export default [
         roman_numerals: 'XIV',
     },
 ];
+
+export default deck;
