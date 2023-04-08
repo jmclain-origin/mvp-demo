@@ -44,6 +44,7 @@
         "@global": ""
     },
     "devDependencies": {
+        "@tailwindcss/forms": "^0.5.3",
         "@types/connect-livereload": "^0.6.0",
         "@types/dotenv-webpack": "^7.0.3",
         "@types/express": "^4.17.15",

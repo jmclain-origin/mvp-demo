@@ -1,21 +1,8 @@
 import React from 'react';
-import { PositionList } from './PositionList';
 import { Card } from './Card';
-
-export const WEEK_LIST_MEANING = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-    'Significator',
-];
 
 export const WeekAheadLayout = (): JSX.Element => (
     <>
-        <PositionList list={WEEK_LIST_MEANING} />
         <div className="flex flex-col justify-center items-center">
             <span className="">
                 <div className="grid gap-x-4 sm:gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8 grid-cols-3 grid-rows-2">

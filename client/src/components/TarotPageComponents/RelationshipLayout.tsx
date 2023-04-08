@@ -1,23 +1,8 @@
 import React from 'react';
-import { PositionList } from './PositionList';
 import { Card } from './Card';
-
-export const RELATIONSHIP_LIST_MEANING = [
-    'Distant past influences',
-    'Recent past influences',
-    'Current state of the relationship',
-    'Future influences',
-    'External influences',
-    'Beliefs',
-    'Favorable energy',
-    'Whats working against',
-    'Hopes and or fears',
-    'Outcome for the relationship',
-];
 
 export const RelationshipLayout = (): JSX.Element => (
     <>
-        <PositionList list={RELATIONSHIP_LIST_MEANING} />
         <div className="flex flex-col justify-center items-center">
             <span className="">
                 <div className="grid gap-x-4 sm:gap-x-4 md:gap-x-8 gap-y-4 md:gap-y-8 grid-cols-5 grid-rows-2">

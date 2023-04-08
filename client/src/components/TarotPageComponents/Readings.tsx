@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { WeekAheadLayout } from './WeekAheadLayout';
-import { CelticCrossLayout } from './CelticCrossLayout';
-import { RelationshipLayout } from './RelationshipLayout';
+
 import { ReadingMatLayout } from './ReadingMatLayout';
-import { fetchCardDrawing } from '@client/axiosApi/tarotApi';
+import { fetchCardDrawing, BASE_URL } from '@client/axiosApi/tarotApi';
+
 import { CardT } from '.';
 
 const Readings = (): JSX.Element => {
@@ -14,6 +13,21 @@ const Readings = (): JSX.Element => {
         setCardDrawing(responseData);
     };
 
+    const mappingDrawings = (cards: CardT[]): void => {
+        (function delay(index = 0): void {
+            if (index === cards.length) return;
+            else
+                setTimeout(() => {
+                    const element = document.getElementById(`card-${index + 1}`) as HTMLImageElement;
+                    element.src = BASE_URL + cards[index].imgUrl;
+                    element.className = element.className.replace('grayscale', 'grayscale-[35%]');
+                    // setLoadDrawn((prevState) => [...prevState, cards[index].name]);
+                    delay(index + 1);
+                }, 1000);
+        })();
+    };
+    console.log('🚀 ~ file: Readings.tsx:19 ~ mappingDrawings ~ mappingDrawings:', mappingDrawings);
+
     useEffect(() => {
         if (!cardDrawing) {
             handleDrawing();
@@ -22,15 +36,7 @@ const Readings = (): JSX.Element => {
 
     return (
         <div className="min-h-screen bg-neutral-800">
-            <ReadingMatLayout name="Celtic Cross">
-                <CelticCrossLayout cards={cardDrawing} />
-            </ReadingMatLayout>
-            <ReadingMatLayout name="Week Ahead">
-                <WeekAheadLayout />
-            </ReadingMatLayout>
-            <ReadingMatLayout name="Relationship spread">
-                <RelationshipLayout />
-            </ReadingMatLayout>
+            <ReadingMatLayout />
         </div>
     );
 };
